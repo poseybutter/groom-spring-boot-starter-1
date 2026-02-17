@@ -1,5 +1,7 @@
 package com.study.profile_stack_api.domain.profile.controller;
 
+import com.study.profile_stack_api.domain.profile.dto.response.ProfileResponse;
+import com.study.profile_stack_api.domain.profile.service.ProfileService;
 import com.study.profile_stack_api.global.common.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -7,11 +9,19 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/profiles")
 public class ProfileController {
+    private final ProfileService profileService;
+
+    public ProfileController(ProfileService profileService) {
+        this.profileService = profileService;
+    }
+
     // === Profile API ===
     // GET
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> getProfile(@PathVariable String id) {
-        return ResponseEntity.ok().body(ApiResponse.success("getProfile | id: %s".formatted(id)));
+    public ResponseEntity<ApiResponse<ProfileResponse>> getProfile(@PathVariable Long id) {
+        // service를 호출해서, id를 통해 Profile을 가져오기
+        ProfileResponse response = profileService.getProfileById(id);
+        return ResponseEntity.ok().body(ApiResponse.success(response));
     }
 
     @GetMapping
