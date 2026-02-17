@@ -1,4 +1,4 @@
-package com.study.profile_stack_api.controller.profile;
+package com.study.profile_stack_api.domain.profile.controller;
 
 import com.study.profile_stack_api.global.common.ApiResponse;
 import org.springframework.http.ResponseEntity;

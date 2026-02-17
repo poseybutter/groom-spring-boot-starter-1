@@ -1,4 +1,4 @@
-package com.study.profile_stack_api.entity;
+package com.study.profile_stack_api.domain.techstack.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,5 @@
-package com.study.profile_stack_api.controller.profile;
+package com.study.profile_stack_api.domain.techstack.controller;
 
-import com.study.profile_stack_api.entity.TechStack;
 import com.study.profile_stack_api.global.common.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

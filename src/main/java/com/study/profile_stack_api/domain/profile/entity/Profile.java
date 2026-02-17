@@ -1,4 +1,4 @@
-package com.study.profile_stack_api.entity;
+package com.study.profile_stack_api.domain.profile.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,14 +16,14 @@ public class Profile {
     private String name;                // 이름
     private String email;               // 이메일
     private String bio;                 // 자기소개
-    private String position;            // 직무
+    private Position position;            // 직무
     private Integer careerYears;        // 경력 연차
     private String githubUrl;           // GitHub 주소
     private String blogUrl;             // 블로그 주소
     private LocalDateTime createdAt;    // 생성 일시
     private LocalDateTime updatedAt;    // 수정 일시
 
-     public void update(Long id, String name, String email, String bio, String position, Integer careerYears, String githubUrl) {
+     public void update(Long id, String name, String email, String bio, Position position, Integer careerYears, String githubUrl) {
          // null이 아닌 필드만 수정
          if (id != null) {this.id = id;}
          if (name != null) {this.name = name;}
