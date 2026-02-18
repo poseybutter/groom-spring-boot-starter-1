@@ -1,7 +1,6 @@
 package com.study.profile_stack_api.global.exception;
 
 import com.study.profile_stack_api.global.common.ApiResponse;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

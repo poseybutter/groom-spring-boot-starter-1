@@ -11,7 +11,6 @@ import com.study.profile_stack_api.global.exception.ErrorCode;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service

@@ -1,6 +1,5 @@
 package com.study.profile_stack_api.domain.profile.dto.response;
 
-import com.study.profile_stack_api.domain.profile.entity.Position;
 import com.study.profile_stack_api.domain.profile.entity.Profile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
