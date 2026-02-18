@@ -1,5 +1,6 @@
 package com.study.profile_stack_api.domain.profile.repository.impl;
 
+import com.study.profile_stack_api.domain.profile.dto.response.ProfileResponse;
 import com.study.profile_stack_api.domain.profile.entity.Position;
 import com.study.profile_stack_api.domain.profile.entity.Profile;
 import com.study.profile_stack_api.domain.profile.repository.dao.ProfileDao;
@@ -64,7 +65,7 @@ public class MySQLStudyLogDaoImpl implements ProfileDao {
         }
     }
 
-    public Page<Profile> findWithPage(int page, int size) {
+    public Page<ProfileResponse> findWithPage(int page, int size) {
         long totalElements = count();
 
         int totalPages = (int) Math.ceil((double) totalElements / size);
@@ -73,12 +74,18 @@ public class MySQLStudyLogDaoImpl implements ProfileDao {
         String sql = "select * from profile limit ? offset ?";
         List<Profile> content = jdbcTemplate.query(sql, profileRowMapper, size, offset);
 
+        // Entity -> DTO
+        List<ProfileResponse> profileResponses = content
+                .stream()
+                .map(ProfileResponse::from)
+                .toList();
+
         boolean first = (page == 0);
         boolean last = (page >= totalPages - 1);     // totalPages=0이면 last 처리 주의
         boolean hasPrevious = (page > 0 && page <= totalPages);
         boolean hasNext = (page + 1 < totalPages);
 
-        return new Page<>(content, page, size, totalElements, totalPages, first, last, hasPrevious, hasNext);
+        return new Page<>(profileResponses, page, size, totalElements, totalPages, first, last, hasPrevious, hasNext);
     }
 
 

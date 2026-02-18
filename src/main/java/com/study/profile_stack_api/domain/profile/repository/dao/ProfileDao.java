@@ -1,5 +1,6 @@
 package com.study.profile_stack_api.domain.profile.repository.dao;
 
+import com.study.profile_stack_api.domain.profile.dto.response.ProfileResponse;
 import com.study.profile_stack_api.domain.profile.entity.Profile;
 import com.study.profile_stack_api.global.common.Page;
 
@@ -14,7 +15,7 @@ public interface ProfileDao {
 
     // === Read ===
     Optional<Profile> findById(Long id);                        // 단건 조회
-    Page<Profile> findWithPage(int offset, int limit);          // 페이징 조회
+    Page<ProfileResponse> findWithPage(int offset, int limit);          // 페이징 조회
     List<Profile> findByPosition(String position);              // 포지션으로 조회
 
     // === Update ===

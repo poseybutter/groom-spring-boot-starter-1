@@ -56,7 +56,7 @@ public class ProfileService {
         return ProfileResponse.from(profile);
     }
 
-    public Page<Profile> getProfileWithPaging(Integer page, Integer size) {
+    public Page<ProfileResponse> getProfileWithPaging(Integer page, Integer size) {
         // 검증
         if (page == null || page < 0 || size == null || size <= 0) {
             throw new ApiException(ErrorCode.INVALID_INPUT, "잘못된 입력 값입니다. page: %d, size: %d".formatted(page, size));
