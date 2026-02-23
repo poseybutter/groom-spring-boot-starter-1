@@ -1,4 +1,4 @@
 package com.study.profile_stack_api.domain.techstack.dao;
 
-public class TechStackDao {
+public interface TechStackDao {
 }

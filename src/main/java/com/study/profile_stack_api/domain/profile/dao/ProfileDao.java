@@ -1,4 +1,4 @@
 package com.study.profile_stack_api.domain.profile.dao;
 
-public class ProfileDao {
+public interface ProfileDao {
 }
