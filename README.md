@@ -26,11 +26,11 @@ src/main/java/com/study/profile_stack_api/
 ├── ProfileStackApiApplication.java
 ├── domain/
 │   ├── profile/
-│   │   ├── controller/
+│   │   ├── controller/ (요청 받기 (URL, 파라미터 정리) + Service 부르기 + 결과를 JSON으로 응답)
 │   │   │   └── ProfileController.java
-│   │   ├── service/
+│   │   ├── service/    (비즈니스 규칙 (예: "없으면 예외 던지기") + Repository 부르기 + 결과 정리해서 Controller에 넘기기)
 │   │   │   └── ProfileService.java
-│   │   ├── repository/
+│   │   ├── repository/ (DB에서 데이터 꺼내기/넣기 (실제로는 DAO가 SQL 실행) + 결과를 Service에 넘기기)
 │   │   │   └── ProfileRepository.java
 │   │   ├── dao/
 │   │   │   ├── ProfileDao.java              (인터페이스)
@@ -205,38 +205,54 @@ curl -X POST http://localhost:8080/api/v1/profiles/1/tech-stacks \
 ## 구현 체크리스트
 
 ### Phase 1: 기본 설정
-- [ ] Spring Boot 프로젝트 설정
-- [ ] application.yml 작성
-- [ ] schema.sql, data.sql 작성
-- [ ] H2 Console 연결 확인
 
-### Phase 2: 공통 모듈
-- [ ] ApiResponse 클래스 구현
-- [ ] Page 클래스 구현
-- [ ] BusinessException 및 하위 예외 클래스 구현
-- [ ] GlobalExceptionHandler 구현
+- [x]  Spring Boot 프로젝트 생성 (spring-boot-starter-web, spring-boot-starter-jdbc, h2, lombok)
+- [x]  application.yml 작성 (H2 설정, SQL 초기화 설정) -> DB 주소, 포트 같은 설정 적어 두는 파일
+- [x]  schema.sql, data.sql 작성 -> DB에 테이블 만들고, 맛보기 데이터 넣기
+- [x]  애플리케이션 실행 후 H2 Console에서 테이블 확인 -> DB가 잘 붙는지 한 번 확인
 
-### Phase 3: Profile CRUD
-- [ ] Profile Entity 및 Enum 구현
-- [ ] Profile DTO 구현
-- [ ] ProfileDao 인터페이스 및 구현체
-- [ ] ProfileRepository 구현
-- [ ] ProfileService 구현
-- [ ] ProfileController 구현
+### Phase 2: 공통 모듈 - 모든 API가 쓸 공통 상자·도구 (ApiResponse, Page, 예외 처리)
 
-### Phase 4: TechStack CRUD
-- [ ] TechStack Entity 및 Enum 구현
-- [ ] TechStack DTO 구현
-- [ ] TechStackDao 인터페이스 및 구현체
-- [ ] TechStackRepository 구현
-- [ ] TechStackService 구현
-- [ ] TechStackController 구현
+- [x]  ApiResponse 클래스 구현 -> 성공/실패 응답을 항상 같은 형태(상자)로 포장
+- [x]  Page 제네릭 클래스 구현 -> 목록을 ‘몇 페이지, 몇 개씩’ 나눠서 줄 때 쓰는 틀
+- [x]  ErrorCode Enum 정의
+- [x]  BusinessException 및 하위 예외 클래스 구현 -> 에러 나면 어떻게 메시지 보여줄지, 한 곳에서 처리
+- [x]  GlobalExceptionHandler 구현 -> 에러 나면 어떻게 메시지 보여줄지, 한 곳에서 처리
 
-### Phase 5: 페이징 & 검색
-- [ ] 프로필 페이징 구현
-- [ ] 프로필 검색 기능 구현
-- [ ] 기술 스택 페이징 구현
-- [ ] 기술 스택 필터링 구현
+### Phase 3: Profile CRUD - 첫 번째 기능(프로필) 완성하기
+
+- [ ]  Entity 클래스 작성 (Profile, Position Enum) -> 프로필이 어떤 항목(name, email, position…)을 가지는지 정의
+- [ ]  DTO 클래스 작성 (CreateRequest, UpdateRequest, Response) -> 프로필이 어떤 항목(name, email, position…)을 가지는지 정의
+- [ ]  ProfileDao 인터페이스 정의
+- [ ]  ProfileDaoImpl 구현 (JdbcTemplate + RowMapper)
+- [ ]  ProfileRepository 구현
+- [ ]  ProfileService 구현
+- [ ]  ProfileController 구현
+- [ ]  cURL 또는 Postman으로 CRUD 테스트
+
+### Phase 4: TechStack CRUD - 두 번째 기능(기술 스택) CRUD
+
+- [ ]  Entity 클래스 작성 (TechStack, TechCategory Enum, Proficiency Enum)
+- [ ]  DTO 클래스 작성 (CreateRequest, UpdateRequest, Response)
+- [ ]  TechStackDao 인터페이스 정의
+- [ ]  TechStackDaoImpl 구현 (profileId를 활용한 쿼리 주의)
+- [ ]  TechStackRepository 구현
+- [ ]  TechStackService 구현 (프로필 존재 여부 검증 포함)
+- [ ]  TechStackController 구현
+- [ ]  cURL 또는 Postman으로 CRUD 테스트
+
+### Phase 5: 페이징 & 검색 - 목록 페이징·검색 보강
+
+- [ ]  프로필 목록 페이징 구현 (findAllWithPaging)
+- [ ]  프로필 검색 구현 (이름 검색, 직무 필터링)
+- [ ]  기술 스택 목록 페이징 구현 (findByProfileIdWithPaging)
+- [ ]  기술 스택 검색 구현 (카테고리, 숙련도 필터링)
+
+### Phase 6: 테스트 코드 (보너스)
+
+- [ ]  ProfileDao 통합 테스트
+- [ ]  TechStackDao 통합 테스트
+- [ ]  페이징 경계 조건 테스트 (첫 페이지, 마지막 페이지, 빈 페이지)
 
 ## 아키텍처
 
@@ -252,6 +268,13 @@ DAO (JdbcTemplate 구현)
     ↓
 Database (H2/MySQL)
 ```
+
+### 각 계층의 역할 요약
+| 계층 | 의미 |
+|------|------|
+| **Controller** | 요청 받고, 응답 돌려주는 계층 (클라이언트와 대화). |
+| **Service** | 실제 업무 규칙·판단 하는 계층 (비즈니스 로직). |
+| **Repository** | DB 접근만 하는 계층 (데이터 읽기/쓰기). |
 
 ### 패키지 구조
 - `domain`: 도메인별 기능 구현
